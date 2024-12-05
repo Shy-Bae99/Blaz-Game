@@ -12,7 +12,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Pages\Backgrounds\" />
+      <None Include="wwwroot\Backgrounds\dungeon_BG_1.png" />
     </ItemGroup>
 
 </Project>

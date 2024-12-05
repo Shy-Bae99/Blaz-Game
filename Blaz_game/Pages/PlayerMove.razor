@@ -1,15 +1,1 @@
-﻿<MapGrid Rows="10" Columns="10" />
-<Character CurrentRow="0" CurrentColumn="0" />
-
-@code {
-    private int currentRow = 0;
-    private int currentColumn = 0;
-
-    private void MoveCharacter(string direction)
-    {
-        if (direction == "up" && currentRow > 0) currentRow--;
-        if (direction == "down" && currentRow < 9) currentRow++;
-        if (direction == "left" && currentColumn > 0) currentColumn--;
-        if (direction == "right" && currentColumn < 9) currentColumn++;
-    }
-}
+﻿

@@ -13,20 +13,62 @@
 </head>
 
 <body>
-    <div id="app">
-        <svg class="loading-progress">
-            <circle r="40%" cx="50%" cy="50%" />
-            <circle r="40%" cx="50%" cy="50%" />
-        </svg>
-        <div class="loading-progress-text"></div>
-    </div>
+<div id="app">
+    <svg class="loading-progress">
+        <circle r="40%" cx="50%" cy="50%" />
+        <circle r="40%" cx="50%" cy="50%" />
+    </svg>
+    <div class="loading-progress-text"></div>
+</div>
 
-    <div id="blazor-error-ui">
-        An unhandled error has occurred.
-        <a href="" class="reload">Reload</a>
-        <a class="dismiss">🗙</a>
-    </div>
-    <script src="_framework/blazor.webassembly.js"></script>
+<div id="blazor-error-ui">
+    An unhandled error has occurred.
+    <a href="" class="reload">Reload</a>
+    <a class="dismiss">🗙</a>
+</div>
+
+<script>
+    function initializeCharacter() {
+        const character = document.getElementById("character");
+        const cellSize = 65; // Taille des cases
+        const gapSize = 1;   // Espacement entre les cases
+        const rows = 10;     // Nombre de lignes
+        const cols = 10;     // Nombre de colonnes
+
+        // Charger la position du personnage depuis LocalStorage
+        let currentRow = parseInt(localStorage.getItem("currentRow")) || 0;
+        let currentCol = parseInt(localStorage.getItem("currentCol")) || 0;
+
+        // Fonction de mise à jour de la position du personnage
+        function updateCharacterPosition() {
+            character.style.top = `${currentRow * (cellSize + gapSize) + (cellSize / 2 - 20)}px`;
+            character.style.left = `${currentCol * (cellSize + gapSize) + (cellSize / 2 - 20)}px`;
+        }
+
+        // Gestion des touches du clavier
+        document.addEventListener("keydown", (e) => {
+            if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.key)) {
+                e.preventDefault(); // Empêche les comportements par défaut des touches
+            }
+
+            if (e.key === "ArrowUp" && currentRow > 0) currentRow--;
+            if (e.key === "ArrowDown" && currentRow < rows - 1) currentRow++;
+            if (e.key === "ArrowLeft" && currentCol > 0) currentCol--;
+            if (e.key === "ArrowRight" && currentCol < cols - 1) currentCol++;
+
+            // Sauvegarder la position dans LocalStorage
+            localStorage.setItem("currentRow", currentRow);
+            localStorage.setItem("currentCol", currentCol);
+
+            updateCharacterPosition();
+        });
+
+        // Initialiser la position du personnage
+        updateCharacterPosition();
+    }
+</script>
+
+<script src="_framework/blazor.webassembly.js"></script>
 </body>
 
 </html>
