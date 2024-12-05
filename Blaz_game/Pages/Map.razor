@@ -7,18 +7,19 @@
     int rows = 10;
     int cols = 10;
     int cellSize = 65; // Taille des cases
-    int gapSize = 2;   // Espacement entre les cases
+    int gapSize = 1;   // Espacement entre les cases
 }
 
-<div style="position: relative; display: grid; grid-template-columns: repeat(@cols, 1fr); grid-gap: @(gapSize)px; width: calc(@(cols * (cellSize + gapSize))px); background-color: darkslategrey;">
+<div style=" position: relative; display: grid; grid-template-columns: repeat(@cols, 1fr); grid-gap: @(gapSize)px; width: calc(@(cols * (cellSize + gapSize))px);">
     @for (int row = 0; row < rows; row++)
     {
         for (int col = 0; col < cols; col++)
         {
             <div style="
-                border: 1px solid #000;
-                height: @(cellSize)px;
-            background-image: url('https://us.123rf.com/450wm/tigatelu/tigatelu1708/tigatelu170800094/85233723-vector-illustration-de-la-bande-dessin%C3%A9e-de-la-grotte-avec-des-%C3%A9tincelles.jpg?ver=6');
+            border: 1px solid #000;
+            height: @(cellSize)px;
+            background-image:url('Backgrounds/dungeon_BG_1.png');
+            background-repeat: no-repeat;    
             background-size: cover;
             background-position: center;">
             </div>
@@ -31,7 +32,7 @@
         position: absolute;
         width: 40px;
         height: 40px;
-        background-image: url('https://e7.pngegg.com/pngimages/356/320/png-clipart-knight-pixel-art-cartoon-knight-sticker-cartoon-thumbnail.png');
+        background-image: url(Chevalier-pixel.png);
         background-size: contain;
         background-repeat: no-repeat;
         background-position: center;
@@ -73,3 +74,4 @@ margin-top : -15px;">
     // Initialiser la position du personnage
     updateCharacterPosition();
 </script>
+
