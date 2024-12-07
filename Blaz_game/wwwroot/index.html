@@ -30,6 +30,7 @@
 <script>
     function initializeCharacter() {
         const character = document.getElementById("character");
+        const stairs = document.getElementById("stairs")
         const cellSize = 65; // Taille des cases
         const gapSize = 1;   // Espacement entre les cases
         const rows = 10;     // Nombre de lignes
@@ -43,6 +44,11 @@
         function updateCharacterPosition() {
             character.style.top = `${currentRow * (cellSize + gapSize) + (cellSize / 2 - 20)}px`;
             character.style.left = `${currentCol * (cellSize + gapSize) + (cellSize / 2 - 20)}px`;
+        }
+
+        function setStairsPosition(row, col) {
+            stairs.style.top = `${row * (cellSize + gapSize) + (cellSize / 2 - 20)}px`;
+            stairs.style.left = `${col * (cellSize + gapSize) + (cellSize / 2 - 20)}px`;
         }
 
         // Gestion des touches du clavier
@@ -65,6 +71,7 @@
 
         // Initialiser la position du personnage
         updateCharacterPosition();
+        
     }
 </script>
 
