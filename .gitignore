@@ -1,5 +1,72 @@
+# Fichiers générés par Visual Studio
+.vs/
+.vscode/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Fichiers binaires et temporaires
 bin/
 obj/
-/packages/
-riderModule.iml
-/_ReSharper.Caches/
+*.log
+*.tlog
+*.log*
+
+# Dépendances locales et globales
+*.nupkg
+*.snupkg
+packages/
+.nuget/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Fichiers générés pour le runtime
+*.dll
+*.pdb
+*.exe
+*.cache
+*.caches
+*.pyc
+*.pyo
+*.out
+*.ipch
+*.iobj
+*.manifest
+*.xml
+
+# Fichiers de builds spécifiques à Blazor
+wwwroot/css/app.css
+wwwroot/css/app.css.map
+wwwroot/_framework/
+wwwroot/service-worker-assets.js
+wwwroot/service-worker.js
+wwwroot/manifest.json
+
+# Fichiers spécifiques au fonctionnement de Blazor WebAssembly
+*.wasm
+*.gz
+*.br
+
+# Fichiers de configuration utilisateur
+*.csproj.user
+*.props
+*.targets
+
+# Configuration locale de l'environnement
+.env
+.env.*
+
+# JetBrains Rider
+.idea/
+
+# ReSharper
+_ReSharper*/
+resharper.xml
+resharper.user.xml
+
+# Fichiers générés par les outils de build (MSBuild)
+msbuild.log
+msbuild.err
+msbuild.wrn
