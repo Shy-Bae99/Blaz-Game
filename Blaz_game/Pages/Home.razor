@@ -4,10 +4,3 @@
 
 
 
-document.getElementById('start-game-button').addEventListener('click', function() {
-// Sauvegarder la position du personnage dans le stockage local
-localStorage.setItem('characterPosition', JSON.stringify({ x: 0, y: 0 }));
-
-// Rediriger vers la page /carte
-window.location.href = "/carte";
-});

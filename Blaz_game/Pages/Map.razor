@@ -3,8 +3,8 @@
 
 @page "/carte"
 
-<PageTitle>La Carte</PageTitle>
 
+<!-- Carte du jeu-->
 @{
     // Dimensions de la grille
     int rows = 10;
@@ -13,7 +13,7 @@
     int gapSize = 1;   // Espacement entre les cases
 }
 
-<div style="
+<div id="mainmap"style="
     background-image: url('./Backgrounds/donjon_bg-1.jpg');
     background-size: cover;
     background-repeat: no-repeat;
@@ -36,7 +36,7 @@
             </div>
         }
     }
-
+    
     <!-- Personnage -->
     <div id="character" style="
         position: absolute;
@@ -48,6 +48,9 @@
         background-position: center;">
     </div>
 </div>
+
+
+
 
 @code {
     protected override async Task OnAfterRenderAsync(bool firstRender)
