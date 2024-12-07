@@ -13,39 +13,60 @@
     int gapSize = 1;   // Espacement entre les cases
 }
 
-<div id="mainmap"style="
-    background-image: url('./Backgrounds/donjon_bg-1.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    position: relative; 
-    display: grid; 
-    grid-template-columns: repeat(@cols, 1fr);
-    width: calc(@(cols * (cellSize + gapSize))px);">
-
-    @for (int row = 0; row < rows; row++)
-    {
-        for (int col = 0; col < cols; col++)
-        {
-            <div style="
-                border: 1px solid lightslategrey;
-                height: @(cellSize)px;
-                background-repeat: no-repeat;    
-                background-size: cover;
-                background-position: center;">
-            </div>
-        }
-    }
-    
-    <!-- Personnage -->
-    <div id="character" style="
-        position: absolute;
-        width: 40px;
-        height: 40px;
-        background-image: url('./Backgrounds/Chevalier-pixel.png');
-        background-size: contain;
+<div style="        
+        background-size: cover;
         background-repeat: no-repeat;
-        background-position: center;">
+        background-position: center;
+        position: relative; 
+        display: flex;
+        flex-direction: row;">
+    <div style="
+        background-image: url('./Backgrounds/donjon_bg-1.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        position: relative; 
+        display: grid; 
+        grid-template-columns: repeat(@cols, 1fr);
+        width: calc(@(cols * (cellSize + gapSize))px);">
+
+        @for (int row = 0; row < rows; row++)
+        {
+            for (int col = 0; col < cols; col++)
+            {
+                <div style="
+                    border: 1px solid lightslategrey;
+                    height: @(cellSize)px;
+                    background-repeat: no-repeat;    
+                    background-size: cover;
+                    background-position: center;">
+                </div>
+            }
+        }
+
+        <!-- Personnage -->
+        <div id="character" style="
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background-image: url('./Backgrounds/Chevalier-pixel.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;">
+        </div>
+    </div>
+
+    <div style="
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        position: relative; 
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;">
+        <div style="flex-grow: 1;">première case</div>
+        <div style="flex-grow: 1;">deuxième case</div>
+        <div style="flex-grow: 3;">troisième case</div>
     </div>
 </div>
 
