@@ -11,10 +11,10 @@ namespace Enemy
             ennemi.Armure += armureDelta;
 
             // Empêche les statistiques d'être négatives
-            if (ennemi.Pv < 0) joueur.Pv = 0;
-            if (ennemi.VitesseAttaque < 0) joueur.VitesseAttaque = 0;
-            if (ennemi.Agilite < 0) joueur.Agilite = 0;
-            if (ennemi.Armure < 0) joueur.Armure = 0;
+            if (ennemi.Pv < 0) ennemi.Pv = 0;
+            if (ennemi.VitesseAttaque < 0) ennemi.VitesseAttaque = 0;
+            if (ennemi.Agilite < 0) ennemi.Agilite = 0;
+            if (ennemi.Armure < 0) ennemi.Armure = 0;
         }
     }
 }
