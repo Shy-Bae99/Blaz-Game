@@ -1,3 +1,4 @@
+namespace Loot;
 
 public class LootGenerator
 {
