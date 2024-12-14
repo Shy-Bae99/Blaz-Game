@@ -4,6 +4,7 @@
 @page "/carte"
 
 
+
 <!-- Carte du jeu-->
 @{
     // Dimensions de la grille
@@ -55,8 +56,7 @@
             background-position: center;">
         </div>
     </div>
-
-    <div style="
+        <div style="
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center;
@@ -64,12 +64,40 @@
         display: flex;
         flex-direction: column;
         justify-content: space-around;">
-        <div style="flex-grow: 1;">première case</div>
-        
-        
-        <div style="flex-grow: 1;">deuxième case</div>
-        <div style="flex-grow: 3;">troisième case</div>
-    </div>
+            <div style="flex-grow: 1;
+            border-style: double;
+            border-width: 4px;
+            border-color: darkslategrey;
+            background-image: url('./Backgrounds/WoodPixelArt2.png');
+            width: 500px;
+            margin-left: 50px;
+            margin-bottom: 10px;
+            ">première case, points de vie, équipement etc... 
+                
+                
+            </div>
+
+
+            <div style="flex-grow: 1;
+            border-style: double;
+            border-width: 4px;
+            border-color: darkslategrey;
+            background-image: url('./Backgrounds/WoodPixelArt.png');
+            width:500px;
+            margin-left: 50px;
+            margin-bottom: 10px;
+            ">deuxième case, inventaire, potions à cliquer et autres "accès rapides"...
+            </div>
+            
+            <div style="flex-grow: 3;
+            border-style: double;
+            border-width: 4px;
+            border-color: darkslategrey;
+            background-image: url('./Backgrounds/WoodPixelArt2.png');
+            width: 500px;
+            margin-left: 50px;">troisième case, historique, histoire du jeu, infos de combat etc....
+            </div>
+        </div>
 </div>
 
 
