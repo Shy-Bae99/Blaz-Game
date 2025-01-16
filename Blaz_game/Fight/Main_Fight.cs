@@ -67,3 +67,19 @@ class Combat
         }
     }
 }
+/*
+exemple d'utilisation
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        Character hero = new Character("Héros", 100, 100, 20, 30, 10); (chaque stat peut être dynamiquement appellée)
+        Character monster = new Character("Monstre", 100, 20, 15, 90, 0);
+
+        Combat.Start(hero, monster);
+    }
+}
+
+/!\ après le fight mettre a jour la vie du joueur
+*/
