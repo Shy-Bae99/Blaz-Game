@@ -1,3 +1,47 @@
 ﻿@page "/inventaire"
 
-<h1>inventaire</h1>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventaire</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Si tu utilises un fichier CSS externe -->
+</head>
+<body style="background-image: url('./Backgrounds/donjon_bg-1.jpg')">
+
+<div class="inventory-container">
+    <!-- Inventaire avec 3 rangées et 5 cases -->
+    <div class="inventory">
+        <!-- 3 rangées de 5 cases -->
+        <div class="row">
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+        </div>
+        <div class="row">
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+        </div>
+        <div class="row">
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+        </div>
+    </div>
+
+    
+    <div class="actions">
+        <button class="action-button" id="equipButton">Équiper</button>
+        <button class="action-button" id="throwAwayButton">Jeter</button>
+    </div>
+</div>
+</body>
+</html>

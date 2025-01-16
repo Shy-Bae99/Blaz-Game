@@ -13,13 +13,17 @@
 
 <script>
     document.getElementById('start-game-button').addEventListener('click', function() {
-        // Redirige l'utilisateur vers la page /carte
-        window.location.href = "/carte";
+       
+        var confirmation = confirm("L'avancement actuel du jeu sera perdu. Voulez-vous vraiment recommencer une nouvelle partie ?");
+
+        
+        if (confirmation) {
+            localStorage.clear();
+            window.location.href = "/carte";
+        }
     });
 </script>
+
+
 </body>
 </html>
-
-
-
-

@@ -1,114 +1,207 @@
 ﻿@inject IJSRuntime JsRuntime
 
-
 @page "/carte"
+@using System.Security.Cryptography.X509Certificates
+@using Player
 
-
-
-<!-- Carte du jeu-->
 @{
-    // Dimensions de la grille
     int rows = 10;
     int cols = 10;
-    int cellSize = 65; // Taille des cases
-    int gapSize = 1;   // Espacement entre les cases
+    int cellSize = 65;
+    int gapSize = 1;
 }
 
-<div style="        
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center;
-        position: relative; 
-        display: flex;
-        flex-direction: row;">
+<div style="
+    background-size: cover; 
+    background-repeat: no-repeat; 
+    background-position: center; 
+    position: relative; 
+    display: flex; 
+    flex-direction: row;">
+    
+    <!-- Carte de jeu -->
     <div style="
-        background-image: url('./Backgrounds/donjon_bg-1.jpg');
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center;
+        background-image: url('./Backgrounds/donjon_bg-1.jpg'); 
+        background-size: cover; 
+        background-repeat: no-repeat; 
+        background-position: center; 
         position: relative; 
         display: grid; 
-        grid-template-columns: repeat(@cols, 1fr);
+        grid-template-columns: repeat(@cols, 1fr); 
         width: calc(@(cols * (cellSize + gapSize))px);">
-
+        
         @for (int row = 0; row < rows; row++)
         {
             for (int col = 0; col < cols; col++)
             {
-                <div style="
-                    border: 1px solid lightslategrey;
-                    height: @(cellSize)px;
-                    background-repeat: no-repeat;    
-                    background-size: cover;
-                    background-position: center;">
-                </div>
+                <div style="border: 1px solid lightslategrey; height: @(cellSize)px; background-repeat: no-repeat; background-size: cover; background-position: center;"></div>
             }
         }
 
         <!-- Personnage -->
-        <div id="character" style="
-            position: absolute;
-            width: 40px;
-            height: 40px;
-            background-image: url('./Backgrounds/Chevalier-pixel.png');
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;">
+        <div id="character" 
+            style="
+                position: absolute; 
+                width: 40px; 
+                height: 40px; 
+                background-image: url('./Backgrounds/Chevalier-pixel.png'); 
+                background-size: contain; 
+                background-repeat: no-repeat; 
+                background-position: center;">
         </div>
     </div>
-        <div style="
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center;
+
+    <!-- Interface utilisateur -->
+    <div style="
+        background-size: cover; 
+        background-repeat: no-repeat; 
+        background-position: center; 
         position: relative; 
-        display: flex;
-        flex-direction: column;
+        display: flex; 
+        flex-direction: column; 
         justify-content: space-around;">
-            <div style="flex-grow: 1;
-            border-style: double;
-            border-width: 4px;
-            border-color: darkslategrey;
-            background-image: url('./Backgrounds/WoodPixelArt2.png');
-            width: 500px;
-            margin-left: 50px;
-            margin-bottom: 10px;
-            ">première case, points de vie, équipement etc... 
-                
-                
-            </div>
 
-
-            <div style="flex-grow: 1;
-            border-style: double;
-            border-width: 4px;
-            border-color: darkslategrey;
-            background-image: url('./Backgrounds/WoodPixelArt.png');
-            width:500px;
-            margin-left: 50px;
-            margin-bottom: 10px;
-            ">deuxième case, inventaire, potions à cliquer et autres "accès rapides"...
+        <div class="flexbox1" style="
+        width: 200px; 
+        background-color: rgba(255, 255, 255, 0.8); 
+        padding: 10px; 
+        border-radius: 8px; 
+        box-shadow: 4px 8px rgba(0, 0, 0, 0.2);">
+            
+        </div>
+        
+        <!-- Affichage de l'or, des stats et de l'étage du donjon-->
+        <div style="
+            flex-grow: 1; 
+            border-style: double; 
+            border-width: 4px; 
+            border-color: darkslategrey; 
+            background-image: url('./Backgrounds/WoodPixelArt.png'); 
+            width: 500px; 
+            height: 150px; 
+            margin-left: 50px; 
+            margin-bottom: 10px; 
+            color: lightgray;">
+           
+            <h4>Statistiques</h4>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; column-gap: 10px;">
+                <p>PV: @joueur.Pv</p>
+                <p>Vitesse d'Attaque: @joueur.VitesseAttaque</p>
+                <p>Agilité: @joueur.Agilite</p>
+                <p>Armure: @joueur.Armure</p>
             </div>
             
-            <div style="flex-grow: 3;
-            border-style: double;
-            border-width: 4px;
-            border-color: darkslategrey;
-            background-image: url('./Backgrounds/WoodPixelArt2.png');
-            width: 500px;
-            margin-left: 50px;">troisième case, historique, histoire du jeu, infos de combat etc....
+            <!-- Nouveau cadre pour afficher l'or -->
+            <div style="
+                 
+                margin-left: 370px; 
+                padding: 10px; 
+                height: 35px; 
+                width: 120px; 
+                border: 2px solid gold; 
+                background-color: rgba(0, 0, 0, 0.5); 
+                color: gold; 
+                font-size: 18px;">
+                Or : @GoldAmount
             </div>
         </div>
+
+        <!-- Autres éléments de l'interface utilisateur -->
+        <div style="
+            flex-grow: 1; 
+            border-style: double; 
+            border-width: 4px; 
+            border-color: darkslategrey; 
+            background-image: url('./Backgrounds/WoodPixelArt.png'); 
+            width: 500px; 
+            height: 150px; 
+            margin-left: 50px; 
+            margin-bottom: 10px; 
+            color: lightgray;">
+            deuxième case, inventaire, potions à cliquer et autres "accès rapides"...
+            <div id="ObjetsRapide" class="row">
+                <div class="itemsmall"></div>
+                <div class="itemsmall"></div>
+                <div class="itemsmall"></div>
+                <div class="itemsmall"></div>
+                <div class="itemsmall"></div>
+            </div>
+
+        </div>
+
+        
+        
+        <!--       Section pour afficher les messages
+        <div style="
+        position: absolute; 
+        top: 20px; 
+        left: 20px; 
+        background-color: rgba(0, 0, 0, 0.7); 
+        color: white; 
+        padding: 10px; 
+        border-radius: 5px; 
+        max-width: 300px; 
+        max-height: 300px; 
+        overflow-y: auto;">
+            Les messages d'alertes seront ajoutés ici
+        </div>
+ -->       
+        <div id="encounter-messages" style="
+            flex-grow: 3; 
+            border-style: double; 
+            border-width: 4px; 
+            border-color: darkslategrey; 
+            background-image: url('./Backgrounds/WoodPixelArt.png'); 
+            width: 500px; 
+            height: 250px; 
+            margin-left: 50px; 
+            color: lightgrey; 
+            overflow: auto; 
+            word-wrap: break-word;">
+        </div>
+
+    </div>
 </div>
 
-
-
-
 @code {
+    
+    // Instance du joueur
+    private Joueur joueur = new Joueur();
+    // Variable d'or réactive
+    private int goldAmount = 100;
+
+    // Propriété publique pour accéder à la quantité d'or
+    public int GoldAmount
+    {
+        get => goldAmount;
+        set
+        {
+            if (goldAmount != value)
+            {
+                goldAmount = value;
+                StateHasChanged(); // Rafraîchit l'UI après la mise à jour
+            }
+        }
+    }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
+            // Initialisation du personnage et des actions possibles
             await JsRuntime.InvokeVoidAsync("initializeCharacter");
         }
+    }
+
+    // Méthode pour obtenir la quantité d'or actuelle
+    public int GetGoldAmount()
+    {
+        return GoldAmount;
+    }
+
+    // Méthode pour ajouter de l'or
+    public void AddGold(int amount)
+    {
+        GoldAmount += amount;
     }
 }
