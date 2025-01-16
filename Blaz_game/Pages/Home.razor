@@ -1,6 +1,29 @@
 ﻿@page "/"
 
-<h1> Home Page. </h1>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Principale</title>
+</head>
+<body>
+<h1>Bienvenue sur le jeu</h1>
+<button id="start-game-button">Start Game</button>
+
+<script>
+    document.getElementById('start-game-button').addEventListener('click', function() {
+       
+        var confirmation = confirm("L'avancement actuel du jeu sera perdu. Voulez-vous vraiment recommencer une nouvelle partie ?");
+
+        
+        if (confirmation) {
+            localStorage.clear();
+            window.location.href = "/carte";
+        }
+    });
+</script>
 
 
-
+</body>
+</html>

@@ -8,10 +8,6 @@ namespace Player
             this.Modifier(0, -80, +10, +30); // Mise a jour des stats (vie, vitesse d'attaque, agilité et armure)
         }
 
-        public override void AfficherStatistiques()
-        {
-            Console.WriteLine("Classe: Barbare");
-            base.AfficherStatistiques();
-        }
+       
     }
 }

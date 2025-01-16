@@ -1,6 +1,6 @@
 namespace Enemy
 {
-    // Classe Barbare héritant de Ennemi
+    // Classe Goblin héritant de Ennemi
     public class Goblin : Ennemi
     {
         public Goblin()

@@ -21,6 +21,8 @@
     <div class="loading-progress-text"></div>
 </div>
 
+        
+
 <div id="blazor-error-ui">
     An unhandled error has occurred.
     <a href="" class="reload">Reload</a>
@@ -45,6 +47,46 @@
             character.style.left = `${currentCol * (cellSize + gapSize) + (cellSize / 2 - 20)}px`;
         }
 
+        // Fonction pour ajouter un message d'alerte à l'interface
+        function displayEncounterMessage(message) {
+            const messagesContainer = document.getElementById("encounter-messages");
+            const newMessage = document.createElement("div");
+            newMessage.innerText = message;
+            messagesContainer.appendChild(newMessage);
+
+            // Optionnel : Limiter le nombre de messages affichés à 5
+            if (messagesContainer.children.length > 30) {
+                messagesContainer.removeChild(messagesContainer.firstChild);
+            }
+        }
+
+        function randomEncounter() {
+            const encounterChance = 30; // 20% de chance de rencontre
+            const randomValue = Math.floor(Math.random() * 100); // Nombre aléatoire entre 0 et 99
+
+            if (randomValue < encounterChance) {
+                const enemies = ["Goblin", "slime", "Squelette"];
+                const randomEnemy = enemies[Math.floor(Math.random() * enemies.length)];
+                const encounterMessage = `Vous rencontrez un ${randomEnemy}! Préparez-vous à combattre!`;
+
+                // Afficher le message sur la page au lieu de l'alerte
+                displayEncounterMessage(encounterMessage);
+
+                // Appel pour obtenir l'or actuel
+                DotNet.invokeMethodAsync('Blaz_game', 'GoldAmount')
+                    .then(goldAmount => {
+                        // Ajoute 10 pièces d'or à l'or actuel
+                        const newGoldAmount = goldAmount + 10;
+
+                        // Appel pour mettre à jour l'or côté Blazor
+                        DotNet.invokeMethodAsync('Blaz_game', 'AddGold', 10);
+
+                        // Met à jour l'affichage dans Blazor (optionnel si l'affichage est lié)
+                        console.log("Or après victoire : " + newGoldAmount);
+                    });
+            }
+        }
+
         // Gestion des touches du clavier
         document.addEventListener("keydown", (e) => {
             if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.key)) {
@@ -60,7 +102,11 @@
             localStorage.setItem("currentRow", currentRow);
             localStorage.setItem("currentCol", currentCol);
 
+            // Mettre à jour la position du personnage
             updateCharacterPosition();
+
+            // Vérifier la rencontre aléatoire après chaque mouvement
+            randomEncounter();
         });
 
         // Initialiser la position du personnage

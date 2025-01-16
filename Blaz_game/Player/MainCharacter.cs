@@ -13,15 +13,14 @@ namespace Player
         {
             Pv = 100;
             VitesseAttaque = 100;
-            Agilite = 0;
-            Armure = 0;
+            Agilite = 60;
+            Armure =70;
         }
 
-        // Méthode d'affichage des statistiques
-        public virtual void AfficherStatistiques()
+        // Méthode pour obtenir les statistiques sous forme de chaîne
+        public virtual string AfficherStatistiques()
         {
-            Console.WriteLine($"PV: {Pv}, Vitesse d'Attaque: {VitesseAttaque}, Agilité: {Agilite}, Armure: {Armure}");
+            return $"PV: {Pv}, Vitesse d'Attaque: {VitesseAttaque}, Agilité: {Agilite}, Armure: {Armure}";
         }
-        
     }
 }
