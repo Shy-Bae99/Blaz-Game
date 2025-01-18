@@ -1,6 +1,6 @@
-public static class DamageMessages
+public static partial class DamageMessages
 {
-    private static Random random = new Random();
+    private static readonly Random random = new Random();
 
     private static List<string> messages = new List<string>
     {

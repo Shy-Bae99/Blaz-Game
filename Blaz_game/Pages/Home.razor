@@ -1,29 +1,59 @@
-﻿@page "/"
+﻿@using Blaz_game.Services
+@using Player
+@using Joueur = Joueur
+@page "/"
+@inject JoueurStateService JoueurStateService
+@inject NavigationManager NavigationManager
 
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Page Principale</title>
-</head>
-<body>
 <h1>Bienvenue sur le jeu</h1>
-<button id="start-game-button">Start Game</button>
+<p>Choisissez un personnage pour commencer :</p>
 
-<script>
-    document.getElementById('start-game-button').addEventListener('click', function() {
-       
-        var confirmation = confirm("L'avancement actuel du jeu sera perdu. Voulez-vous vraiment recommencer une nouvelle partie ?");
+<select @onchange="OnCharacterSelected">
+    <option value="">-- Sélectionnez --</option>
+    <option value="Voleur">Voleur</option>
+    <option value="Barbare">Barbare</option>
+    <option value="Guerrier">Guerrier</option>
+</select>
 
-        
-        if (confirmation) {
-            localStorage.clear();
-            window.location.href = "/carte";
+<button @onclick="StartGame" disabled="@(!canStartGame)">Démarrer le jeu</button>
+
+<p>@message</p>
+
+@code {
+    private string selectedCharacter = "";
+    private bool canStartGame = false;
+    private string message = "";
+
+    private void OnCharacterSelected(ChangeEventArgs e)
+    {
+        selectedCharacter = e.Value.ToString();
+        canStartGame = !string.IsNullOrEmpty(selectedCharacter);
+
+        message = canStartGame
+            ? $"Vous avez sélectionné {selectedCharacter}. Cliquez sur 'Démarrer le jeu'."
+            : "Veuillez choisir un personnage.";
+    }
+
+    private void StartGame()
+    {
+        if (string.IsNullOrEmpty(selectedCharacter))
+        {
+            return;
         }
-    });
-</script>
 
+        switch (selectedCharacter)
+        {
+            case "Voleur":
+                JoueurStateService.SetJoueur(new Joueur());
+                break;
+            case "Barbare":
+                JoueurStateService.SetJoueur(new Joueur());
+                break;
+            case "Guerrier":
+                JoueurStateService.SetJoueur(new Joueur());
+                break;
+        }
 
-</body>
-</html>
+        NavigationManager.NavigateTo("/carte");
+    }
+}

@@ -1,13 +1,14 @@
 namespace Player
 {
-    // Classe Barbare héritant de Joueur
     public class Barbare : Joueur
     {
         public Barbare()
         {
-            this.Modifier(0, -80, +10, +30); // Mise a jour des stats (vie, vitesse d'attaque, agilité et armure)
+            this.PV = 110;
+            this.Attaque = 20;
+            this.VitesseAttaque = 5;
+            this.Agilite = 15;
+            this.Armure = 10;
         }
-
-       
     }
 }

@@ -1,4 +1,9 @@
-class Character
+using Player;
+using Enemy;
+using System;
+using System.Collections.Generic;
+
+public class Character
 {
     public string Name { get; set; }
     public int Health { get; set; }
@@ -18,14 +23,19 @@ class Character
     }
 }
 
-class Combat
+
+public class Combat
 {
     private static Random random = new Random();
+    private List<string> combatLog = new List<string>(); // Pour stocker les messages
 
-    public static void Start(Character character1, Character character2)
+    public List<string> CombatLog => combatLog; // Expose les messages pour l'UI
+
+    public Character Start(Character character1, Character character2)
     {
-        Console.WriteLine($"{character1.Name} vs {character2.Name} - Le combat commence !\n");
-
+        combatLog.Clear(); // Nettoie les messages pour un nouveau combat
+        combatLog.Add($"{character1.Name} vs {character2.Name} - Le combat commence !");
+        
         while (character1.Health > 0 && character2.Health > 0)
         {
             FightTurn(character1, character2);
@@ -35,51 +45,86 @@ class Combat
             }
         }
 
-        string winner = character1.Health > 0 ? character1.Name : character2.Name;
-        Console.WriteLine($"{winner} remporte le combat !\n");
+        Character winner = character1.Health > 0 ? character1 : character2;
+        combatLog.Add($"{winner.Name} remporte le combat !");
+        return winner;
     }
 
-    private static void FightTurn(Character attacker, Character defender)
+    private void FightTurn(Character attacker, Character defender)
     {
-        // Calcul de l'esquive
         int evadeChance = Math.Max(0, 100 - defender.Agility + attacker.AttackSpeed);
         bool isHit = random.Next(100) < evadeChance;
 
         if (isHit)
         {
-            // Calcul des dégâts réduits par l'armure
             int damage = attacker.Attack - (attacker.Attack * defender.Armor / 100);
             damage = Math.Max(damage, 0);
             defender.Health -= damage;
 
-            // Afficher un message de dégât aléatoire
-            string damageMessage = DamageMessages.GetRandomMessage(attacker.Name, defender.Name, damage);
-            Console.WriteLine(damageMessage);
+            string combatMessage = DamageMessages.GetRandomMessage(attacker.Name, defender.Name, damage);
+            combatLog.Add(combatMessage);
 
             if (defender.Health <= 0)
             {
-                Console.WriteLine($"{defender.Name} est vaincu !\n");
+                combatLog.Add($"{defender.Name} est vaincu !");
             }
         }
         else
         {
-            Console.WriteLine($"{defender.Name} esquive l'attaque de {attacker.Name} !\n");
+            combatLog.Add($"{defender.Name} esquive l'attaque de {attacker.Name} !");
         }
     }
 }
-/*
-exemple d'utilisation
 
-class Program
+// Modifications pour correspondre aux changements suggérés
+public class Joueur
 {
-    static void Main(string[] args)
-    {
-        Character hero = new Character("Héros", 100, 100, 20, 30, 10); (chaque stat peut être dynamiquement appellée)
-        Character monster = new Character("Monstre", 100, 20, 15, 90, 0);
+    public int Pv { get; set; } = 100;
+    public int Attaque { get; set; } = 20;
+    public int VitesseAttaque { get; set; } = 10;
+    public int Agilite { get; set; } = 15;
+    public int Armure { get; set; } = 5;
 
-        Combat.Start(hero, monster);
+    public Character ToCharacter()
+    {
+        return new Character("Joueur", Pv, Attaque, VitesseAttaque, Agilite, Armure);
     }
 }
 
-/!\ après le fight mettre a jour la vie du joueur
-*/
+public class Ennemi
+{
+    public int Pv { get; set; } = 80;
+    public int Attaque { get; set; } = 15;
+    public int VitesseAttaque { get; set; } = 8;
+    public int Agilite { get; set; } = 10;
+    public int Armure { get; set; } = 3;
+
+    public Character ToCharacter()
+    {
+        return new Character("Monstre", Pv, Attaque, VitesseAttaque, Agilite, Armure);
+    }
+}
+
+partial class Program
+{
+    static void Main(string[] args)
+    {
+        Joueur joueur = new Joueur();
+        Ennemi ennemi = new Ennemi();
+
+        // Utilisation des méthodes ToCharacter pour créer des objets Character
+        Character hero = joueur.ToCharacter();
+        Character monster = ennemi.ToCharacter();
+
+        Combat combat = new Combat();
+        Character winner = combat.Start(hero, monster);
+
+        // Afficher les logs du combat
+        foreach (var message in combat.CombatLog)
+        {
+            Console.WriteLine(message);
+        }
+    }
+    
+}
+

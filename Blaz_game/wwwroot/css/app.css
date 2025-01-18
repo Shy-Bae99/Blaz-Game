@@ -1,7 +1,14 @@
+@font-face {
+    font-family: "alagard";
+    src: url("../Fonts/alagard.ttf");
+}
+
+
 html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: 'alagard', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     --bs-body-bg: #484d51;
     color: lightgrey;
+    font-size: 20px;
 }
 
 h1:focus {
@@ -163,4 +170,52 @@ body {
 
 .action-button:hover {
     background-color: #444;
+}
+.game-start-button {
+    padding: 10px;
+    font-size: 16px;
+    border: double 5px;
+    background-color: lightgrey    ;
+    color: green;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.homeIcon {
+    background-image: url('../Backgrounds/playerImage.png');
+    background-size: cover;
+    width: 20px;
+    height: 20px;
+    background-color: gold;
+    border-radius: 35%;
+    margin-left: -10px;
+}
+
+.MapIcon {
+    background-image: url('../Backgrounds/MapLogo.png');
+    background-size: cover;
+    width: 20px;
+    height: 20px;
+    background-color: gold;
+    border-radius: 35%;
+    margin-left: -10px;
+}
+
+.InventoryIcon {
+    background-image: url('../Backgrounds/InventoryLogo.png');
+    background-size: cover;
+    width: 20px;
+    height: 20px;
+    background-color: gold;
+    border-radius: 35%;
+    margin-left: -10px;
+}
+
+.menuIcon {
+    background-image: url('../Backgrounds/MenuLogo.png');
+    background-size: cover;
+    width: 20px;
+    height: 20px;
+    background-color: gold;
+    border-radius: 35%;
+    margin-left: -10px;
 }
