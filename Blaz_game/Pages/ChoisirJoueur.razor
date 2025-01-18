@@ -1,0 +1,36 @@
+@page "/choisir-joueur"
+@inject Blaz_game.Services.JoueurStateService JoueurStateService
+@inject NavigationManager NavigationManager
+@using Blaz_game.Services
+@using Player
+@using Joueur = Joueur
+<h2>Choisissez votre personnage</h2>
+
+<ul>
+    <li>
+        <button @onclick="@(() => ChoisirPerso("Voleur"))">Voleur
+        </button>
+    </li>
+    <li>
+        <button @onclick="@(() => ChoisirPerso("Joueur"))">Joueur standard 
+        </button>
+        
+    </li>
+</ul>
+
+@code {
+    private void ChoisirPerso(string type)
+    {
+        if (type == "Voleur")
+        {
+            JoueurStateService.SetJoueur(new Joueur());
+
+        }
+        else
+        {
+            JoueurStateService.SetJoueur(new Joueur());
+        }
+
+        NavigationManager.NavigateTo("/carte");
+    }
+}

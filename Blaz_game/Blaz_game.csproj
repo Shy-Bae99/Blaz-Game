@@ -14,5 +14,7 @@
     <ItemGroup>
       <None Include="wwwroot\Backgrounds\dungeon_BG_1.png" />
     </ItemGroup>
-
+    <ItemGroup>
+        
+    </ItemGroup>
 </Project>

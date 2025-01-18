@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,6 +9,30 @@
     <link rel="stylesheet" href="css/app.css" />
     <link rel="icon" type="image/png" href="favicon.png" />
     <link href="Blaz_game.styles.css" rel="stylesheet" />
+    <style>
+        /* Style pour l'overlay */
+        #encounter-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0s, opacity 0.5s;
+        }
+        #encounter-overlay img {
+            max-width: 80%;
+            max-height: 80%;
+            border: 5px solid white;
+            border-radius: 10px;
+        }
+    </style>
 </head>
 
 <body>
@@ -21,76 +44,100 @@
     <div class="loading-progress-text"></div>
 </div>
 
-        
+<div id="encounter-messages"></div>
 
-<div id="blazor-error-ui">
-    An unhandled error has occurred.
-    <a href="" class="reload">Reload</a>
-    <a class="dismiss">🗙</a>
+<!-- Superposition pour la rencontre aléatoire -->
+<div id="encounter-overlay">
+    <img id="encounter-image" src="" alt="Encounter Image" />
 </div>
 
 <script>
+    let goldAmount = 0; // Initialiser la quantité d'or
+
     function initializeCharacter() {
         const character = document.getElementById("character");
-        const cellSize = 65; // Taille des cases
-        const gapSize = 1;   // Espacement entre les cases
-        const rows = 10;     // Nombre de lignes
-        const cols = 10;     // Nombre de colonnes
+        const encounterOverlay = document.getElementById("encounter-overlay");
+        const encounterImage = document.getElementById("encounter-image");
+        const cellSize = 65;
+        const gapSize = 1;
+        const rows = 10;
+        const cols = 10;
 
-        // Charger la position du personnage depuis LocalStorage
         let currentRow = parseInt(localStorage.getItem("currentRow")) || 0;
         let currentCol = parseInt(localStorage.getItem("currentCol")) || 0;
+        let movementEnabled = true; // Permet de bloquer les mouvements
 
-        // Fonction de mise à jour de la position du personnage
         function updateCharacterPosition() {
             character.style.top = `${currentRow * (cellSize + gapSize) + (cellSize / 2 - 20)}px`;
             character.style.left = `${currentCol * (cellSize + gapSize) + (cellSize / 2 - 20)}px`;
         }
 
-        // Fonction pour ajouter un message d'alerte à l'interface
         function displayEncounterMessage(message) {
             const messagesContainer = document.getElementById("encounter-messages");
             const newMessage = document.createElement("div");
             newMessage.innerText = message;
             messagesContainer.appendChild(newMessage);
+        }
 
-            // Optionnel : Limiter le nombre de messages affichés à 5
-            if (messagesContainer.children.length > 30) {
-                messagesContainer.removeChild(messagesContainer.firstChild);
-            }
+        function updateGoldDisplay() {
+            const goldDisplay = document.getElementById("gold-display");
+            goldDisplay.innerText = `Or : ${goldAmount}`;
+        }
+
+        function addGold(amount) {
+            goldAmount += amount;
+            updateGoldDisplay();
+
+            DotNet.invokeMethodAsync('Blaz_game', 'UpdateGoldFromJs', goldAmount)
+                .catch(err => console.error('Erreur lors de l’envoi de la mise à jour d’or à Blazor :', err));
         }
 
         function randomEncounter() {
-            const encounterChance = 30; // 20% de chance de rencontre
-            const randomValue = Math.floor(Math.random() * 100); // Nombre aléatoire entre 0 et 99
+            const encounterChance = 30;
+            const randomValue = Math.floor(Math.random() * 100);
 
             if (randomValue < encounterChance) {
-                const enemies = ["Goblin", "slime", "Squelette"];
+                const enemies = [
+                    { name: "Goblin", image: "./Backgrounds/Goblin.png" },
+                    { name: "Slime", image: "./Backgrounds/Slime.png" },
+                    { name: "Squelette", image: "./Backgrounds/Squelette.png" }
+                ];
                 const randomEnemy = enemies[Math.floor(Math.random() * enemies.length)];
-                const encounterMessage = `Vous rencontrez un ${randomEnemy}! Préparez-vous à combattre!`;
 
-                // Afficher le message sur la page au lieu de l'alerte
+                const encounterMessage = `Vous rencontrez un ${randomEnemy.name}! Préparez-vous à combattre!`;
                 displayEncounterMessage(encounterMessage);
 
-                // Appel pour obtenir l'or actuel
-                DotNet.invokeMethodAsync('Blaz_game', 'GoldAmount')
-                    .then(goldAmount => {
-                        // Ajoute 10 pièces d'or à l'or actuel
-                        const newGoldAmount = goldAmount + 10;
+                // Bloquer les mouvements et afficher l'overlay
+                movementEnabled = false;
+                encounterImage.src = randomEnemy.image;
+                encounterOverlay.style.visibility = "visible";
+                encounterOverlay.style.opacity = "1";
+                // bug détecté, quand on spamme les touches de mouvement, même quand le personnage est bloqué, il retente un combat. peut donc enchainer plusieurs victoires ou echecs en un seul timeout
+                
+                // Simuler un combat et déterminer l'issue après 5 secondes
+                setTimeout(() => {
+                    const playerWins = Math.random() < 0.8;
+                    if (playerWins) {
+                        const goldReward = Math.floor(Math.random() * 2) + 5;
+                        addGold(goldReward);
+                        displayEncounterMessage(`Vous avez gagné le combat et obtenu ${goldReward} or!`);
+                    } else {
+                        displayEncounterMessage("Vous avez perdu le combat... Pas d'or pour cette fois.");
+                    }
 
-                        // Appel pour mettre à jour l'or côté Blazor
-                        DotNet.invokeMethodAsync('Blaz_game', 'AddGold', 10);
-
-                        // Met à jour l'affichage dans Blazor (optionnel si l'affichage est lié)
-                        console.log("Or après victoire : " + newGoldAmount);
-                    });
+                    // Réactiver les mouvements et masquer l'overlay
+                    movementEnabled = true;
+                    encounterOverlay.style.opacity = "0";
+                    encounterOverlay.style.visibility = "hidden";
+                }, 5000);
             }
         }
 
-        // Gestion des touches du clavier
         document.addEventListener("keydown", (e) => {
+            if (!movementEnabled) return;
+
             if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.key)) {
-                e.preventDefault(); // Empêche les comportements par défaut des touches
+                e.preventDefault();
             }
 
             if (e.key === "ArrowUp" && currentRow > 0) currentRow--;
@@ -98,23 +145,18 @@
             if (e.key === "ArrowLeft" && currentCol > 0) currentCol--;
             if (e.key === "ArrowRight" && currentCol < cols - 1) currentCol++;
 
-            // Sauvegarder la position dans LocalStorage
             localStorage.setItem("currentRow", currentRow);
             localStorage.setItem("currentCol", currentCol);
 
-            // Mettre à jour la position du personnage
             updateCharacterPosition();
-
-            // Vérifier la rencontre aléatoire après chaque mouvement
             randomEncounter();
         });
 
-        // Initialiser la position du personnage
         updateCharacterPosition();
+        updateGoldDisplay();
     }
 </script>
 
 <script src="_framework/blazor.webassembly.js"></script>
 </body>
-
 </html>
